@@ -1,64 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar';
-import Carousel from '../components/Carousel';
-import ToggleButton from '../components/ToggleButton';
+import React, { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
+import Carousel from "../components/Carousel";
+import ToggleButton from "../components/ToggleButton";
+import Search from "../components/Search";
+import Card from "../components/Card";
 
 const Home = (props) => {
     const { mode, setMode } = props;
     const [isScrolled, setIsScrolled] = useState(false);
 
-    
-
     useEffect(() => {
-
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
         };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, [mode]);
 
     return (
-        <div className={`min-h-screen ${mode === 'light' ? 'bg-white text-black' : 'bg-gray-900 text-white'} transition-all duration-300`}>
-            {/* Navbar with scroll effects */}
+        <div
+            className={`min-h-screen ${mode === "light"
+                    ? "bg-gradient-to-b from-gray-50 to-white text-gray-800"
+                    : "bg-gradient-to-b from-gray-800 to-gray-900 text-white"
+                } transition-all duration-300`}>
             <Navbar mode={mode} setMode={setMode} isScrolled={isScrolled} />
 
             <Carousel />
 
             <div
-                className={`min-h-screen flex flex-col items-center justify-center ${mode === 'light' ? 'bg-white text-black' : 'bg-gray-900 text-white'} transition-all duration-300`}
+                className={`min-h-screen flex flex-col items-center justify-start ${mode === "light"
+                        ? "bg-gradient-to-b from-white to-gray-50 text-gray-800"
+                        : "bg-gradient-to-b from-gray-900 to-gray-800 text-white"
+                    } transition-all duration-300`}
             >
                 <div className="w-full max-w-lg text-center">
-                    <h1 className="text-4xl font-bold mt-4 transform transition-transform duration-300 hover:scale-105">
+                    <h1 className="text-5xl font-extrabold mt-4 mb-4 transform transition-transform duration-300 hover:scale-110 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
                         Welcome to MovieSearch
                     </h1>
-                    <p className="mt-2 text-lg">Search for your favorite movies and TV shows</p>
+                    <p className="mt-2 text-lg font-medium text-gray-600 dark:text-gray-300">
+                        Search for your favorite movies and TV shows with ease.
+                    </p>
                 </div>
 
-                <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 py-4">
-                    {[...Array(6)].map((_, index) => (
-                        <div
-                            key={index}
-                            className="relative group cursor-pointer bg-cover bg-center h-80 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:scale-105"
-                            style={{
-                                backgroundImage: `url('https://via.placeholder.com/300x450.png?text=Movie+${index + 1}')`,
-                            }}
-                            // http://www.omdbapi.com/?apikey=8eb679da&s=superman
-                        >
-                            <div className="absolute inset-0 bg-black opacity-30"></div>
-                            <div className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <div className="text-center text-white p-4">
-                                    <h2 className="text-2xl font-semibold">Movie Title {index + 1}</h2>
-                                    <p className="mt-2 text-lg">Release Year: 2023</p>
-                                    <p className="mt-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                <div className="mt-6">
+                    <Search mode={mode}/>
                 </div>
 
-                <ToggleButton mode={mode} setMode={setMode}/>
+                {/* <div className="mt-8 bg-red-500 w-full h-90">
+                    <Card/>
+                </div> */}
+                <div className="mt-8">
+                    <ToggleButton mode={mode} setMode={setMode} />
+                </div>
             </div>
         </div>
     );

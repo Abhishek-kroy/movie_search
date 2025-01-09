@@ -3,38 +3,89 @@ import axios from "axios";
 
 const Carousel = () => {
     const [movies, setMovies] = useState([]);
-    const [activeIndex, setActiveIndex] = useState(0); // Track active slide
+    const [activeIndex, setActiveIndex] = useState(0);
 
-    const apiUrl = "http://www.omdbapi.com/?apikey=8eb679da&s=superman";
+    const apiUrl1 = "http://www.omdbapi.com/?apikey=8eb679da&s=superman";
+    const apiUrl2 = "http://www.omdbapi.com/?apikey=8eb679da&s=Avengers";
 
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const response = await axios.get(apiUrl);
-                if (response.data.Response === "True") {
-                    setMovies(response.data.Search);
-                    
+                // Fetch static movie lists first
+                const response1 = await axios.get(apiUrl1);
+                const response2 = await axios.get(apiUrl2);
+                console.log("Static Movie Lists:", response1.data.Search, response2.data.Search);
+        
+                const systemPrompt = "You are a movie Suggestor";
+                const userPrompt = "Suggest 10 movie trending all over the globe right now";
+        
+                // Always set static movies first
+                const staticMovieData = [
+                    ...response1.data.Search.slice(0, 1),
+                    ...response2.data.Search.slice(0, 1)
+                ];
+        
+                setMovies(staticMovieData);
+        
+                // Proceed to fetch AIML response if available
+                const aimlResponse = await axios.get('http://localhost:3000/api/v1/aimlsuggesstion', {
+                    params: {
+                        "systemPrompt": systemPrompt,
+                        "userPrompt": userPrompt
+                    }
+                });
+        
+                console.log("AIML API Response:", aimlResponse.data);
+        
+                let movieTitles = [];
+                
+                if (aimlResponse.data.success) {
+                    console.log("Movie Suggestions:", aimlResponse.data.response);
+        
+                    // Extract movie names from the response
+                    movieTitles = aimlResponse.data.response.match(/\"([^\"]+)\"/g).map(title => title.replace(/\"/g, ''));
+                    console.log("Extracted Movie Titles:", movieTitles);
                 } else {
-                    console.error("No movies found");
+                    console.error("Failed to fetch suggestions:", aimlResponse.data.error);
                 }
+        
+                // Fetch additional movie data based on AIML response if available
+                const movieApiCalls = movieTitles.map(async (title) => {
+                    const response = await axios.get(`http://www.omdbapi.com/?apikey=8eb679da&s=${title}`);
+                    if (response.data.Response === "True") {
+                        return response.data.Search.slice(0, 1)[0]; // Add only the first movie result
+                    } else {
+                        console.log(`No results found for: ${title}`);
+                        return null;
+                    }
+                });
+        
+                const dynamicMovies = await Promise.all(movieApiCalls);
+        
+                // Combine static and dynamic movies
+                const allMovies = [...staticMovieData, ...dynamicMovies.filter((movie) => movie !== null)];
+                setMovies(allMovies);
+                console.log("All Movies:", allMovies);
+        
             } catch (error) {
                 console.error("Error fetching movie data:", error);
             }
-        };
+        };              
+
         fetchMovies();
     }, []);
 
-useEffect(() => {
-    console.log(movies); // Change slide every 3 seconds
-}, [movies.length]); // Re-run if movie length changes
+    useEffect(() => {
+        console.log(movies);
+    }, [movies.length]);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setActiveIndex((prevIndex) => (prevIndex + 1) % movies.length); // Circular navigation
-        }, 3000); // Change slide every 3 seconds
+        }, 3000);
 
         return () => clearInterval(interval); // Cleanup interval on component unmount
-    }, [movies.length]); // Re-run if movie length changes
+    }, [movies.length]);
 
     const goToPreviousSlide = () => {
         setActiveIndex((prev) => (prev === 0 ? movies.length - 1 : prev - 1));
@@ -51,20 +102,16 @@ useEffect(() => {
                     movies.map((movie, index) => (
                         <div
                             key={index}
-                            style={{ '--image-url': `url(${movie.Poster})` }} // Dynamically setting the background image
+                            style={{ '--image-url': `url(${movie.Poster})` }}
                             className={`bg-[image:var(--image-url)] bg-contain bg-center h-[80vh] w-full relative ${index === activeIndex ? "" : "hidden"} duration-200 ease-in-out`}
                         >
-                            {/* Background blur */}
-                            <div className="absolute inset-0 bg-black bg-opacity-60 blur-md"></div> {/* Add the blur and overlay */}
-
-                            {/* Content */}
+                            <div className="absolute inset-0 bg-black bg-opacity-60 blur-md"></div>
                             <div className="absolute inset-0 flex flex-col justify-end items-center p-4 space-y-4">
                                 <h1 className="text-3xl font-semibold text-white">{movie.Title}</h1>
                                 <p className="text-lg font-light text-white"><strong>{movie.Year}</strong></p>
-                                <p className="text-base">{movie.Plot}</p>
+                                <p className="text-base text-white">{movie.Plot}</p>
                             </div>
                         </div>
-
                     ))
                 ) : (
                     <div className="flex justify-center items-center h-full">
@@ -72,7 +119,6 @@ useEffect(() => {
                     </div>
                 )}
             </div>
-
 
             <div className="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3">
                 {movies.map((_, index) => (
