@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import { FaInfoCircle, FaUsers, FaClipboardList } from "react-icons/fa"; // Icons for sections
+import ToggleButton from "../components/ToggleButton";
 
 const About = ({ mode, setMode }) => {
     const toggleTheme = () => {
@@ -82,16 +83,7 @@ const About = ({ mode, setMode }) => {
                 </div>
             </div>
 
-            {/* Theme Toggle Button */}
-            <div className="fixed bottom-8 right-8 z-50">
-                <button
-                    onClick={toggleTheme}
-                    className="w-12 h-12 bg-blue-500 text-white rounded-full shadow-lg flex justify-center items-center hover:bg-blue-600 focus:outline-none transition-all duration-300"
-                    aria-label="Toggle theme"
-                >
-                    {mode === 'light' ? '🌙' : '🌞'}
-                </button>
-            </div>
+            <ToggleButton mode={mode} setMode={setMode}/>
         </div>
     );
 };

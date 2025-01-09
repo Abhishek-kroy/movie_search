@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Carousel from '../components/Carousel';
+import ToggleButton from '../components/ToggleButton';
 
 const Home = (props) => {
     const { mode, setMode } = props;
     const [isScrolled, setIsScrolled] = useState(false);
 
-    const toggleTheme = () => {
-        setMode(mode === 'light' ? 'dark' : 'light');
-    };
+    
 
     useEffect(() => {
 
@@ -35,14 +34,6 @@ const Home = (props) => {
                         Welcome to MovieSearch
                     </h1>
                     <p className="mt-2 text-lg">Search for your favorite movies and TV shows</p>
-
-                    <button
-                        onClick={toggleTheme}
-                        className={`mt-6 px-6 py-3 rounded-full transition-all duration-300 ${mode === 'light' ? 'bg-blue-500 hover:bg-blue-600' : 'bg-yellow-500 hover:bg-yellow-600'}`}
-                        aria-label="Toggle theme"
-                    >
-                        Toggle {mode === 'light' ? 'Dark' : 'Light'} Mode
-                    </button>
                 </div>
 
                 <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 py-4">
@@ -67,15 +58,7 @@ const Home = (props) => {
                     ))}
                 </div>
 
-                <div className="fixed bottom-8 right-8 z-50">
-                    <button
-                        onClick={toggleTheme}
-                        className="w-12 h-12 bg-blue-500 text-white rounded-full shadow-lg flex justify-center items-center hover:bg-blue-600 focus:outline-none transition-all duration-300"
-                        aria-label="Toggle theme"
-                    >
-                        {mode === 'light' ? '🌙' : '🌞'}
-                    </button>
-                </div>
+                <ToggleButton mode={mode} setMode={setMode}/>
             </div>
         </div>
     );
