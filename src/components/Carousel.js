@@ -20,6 +20,7 @@ const Carousel = () => {
                 const userPrompt = "Suggest 10 movie trending all over the globe right now";
         
                 // Always set static movies first
+                
                 const staticMovieData = [
                     ...response1.data.Search.slice(0, 1),
                     ...response2.data.Search.slice(0, 1)
@@ -30,8 +31,8 @@ const Carousel = () => {
                 // Proceed to fetch AIML response if available
                 const aimlResponse = await axios.get('http://localhost:3000/api/v1/aimlsuggesstion', {
                     params: {
-                        "systemPrompt": systemPrompt,
-                        "userPrompt": userPrompt
+                        systemPrompt: systemPrompt,
+                        userPrompt: userPrompt
                     }
                 });
         
@@ -109,7 +110,6 @@ const Carousel = () => {
                             <div className="absolute inset-0 flex flex-col justify-end items-center p-4 space-y-4">
                                 <h1 className="text-3xl font-semibold text-white">{movie.Title}</h1>
                                 <p className="text-lg font-light text-white"><strong>{movie.Year}</strong></p>
-                                <p className="text-base text-white">{movie.Plot}</p>
                             </div>
                         </div>
                     ))

@@ -3,38 +3,33 @@ import Navbar from "../components/Navbar";
 import Carousel from "../components/Carousel";
 import ToggleButton from "../components/ToggleButton";
 import Search from "../components/Search";
-import Card from "../components/Card";
+import Cards from "../components/Cards";
+import Footer from "../components/footer";
 
 const Home = (props) => {
     const { mode, setMode } = props;
-    const [isScrolled, setIsScrolled] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [mode]);
+    
+    const [suggestedMovies, setsuggestedMovies] = useState([]);
+    const [isloading, setisloading] = useState("");
 
     return (
         <div
             className={`min-h-screen ${mode === "light"
-                    ? "bg-gradient-to-b from-gray-50 to-white text-gray-800"
-                    : "bg-gradient-to-b from-gray-800 to-gray-900 text-white"
+                ? "bg-gradient-to-b from-gray-50 to-white text-gray-800"
+                : "bg-gradient-to-b from-gray-800 to-gray-900 text-white"
                 } transition-all duration-300`}>
-            <Navbar mode={mode} setMode={setMode} isScrolled={isScrolled} />
+
+            <Navbar mode={mode} />
 
             <Carousel />
 
             <div
-                className={`min-h-screen flex flex-col items-center justify-start ${mode === "light"
-                        ? "bg-gradient-to-b from-white to-gray-50 text-gray-800"
-                        : "bg-gradient-to-b from-gray-900 to-gray-800 text-white"
+                className={` min-h-screen flex flex-col items-center justify-start ${mode === "light"
+                    ? "bg-gradient-to-b from-white to-gray-50 text-gray-800"
+                    : "bg-gradient-to-b from-gray-900 to-gray-800 text-white"
                     } transition-all duration-300`}
             >
-                <div className="w-full max-w-lg text-center">
+                <div className="mb-4 w-full max-w-lg text-center">
                     <h1 className="text-5xl font-extrabold mt-4 mb-4 transform transition-transform duration-300 hover:scale-110 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
                         Welcome to MovieSearch
                     </h1>
@@ -43,16 +38,14 @@ const Home = (props) => {
                     </p>
                 </div>
 
-                <div className="mt-6">
-                    <Search mode={mode}/>
-                </div>
-
-                {/* <div className="mt-8 bg-red-500 w-full h-90">
-                    <Card/>
-                </div> */}
+                <Search mode={mode} setsuggestedMovies={setsuggestedMovies} setisloading={setisloading}/>
+                <Cards mode={mode} suggestedMovies={suggestedMovies} isloading={isloading}/>
                 <div className="mt-8">
                     <ToggleButton mode={mode} setMode={setMode} />
                 </div>
+            </div>
+            <div className="w-full h-full">
+                <Footer mode={mode} />
             </div>
         </div>
     );

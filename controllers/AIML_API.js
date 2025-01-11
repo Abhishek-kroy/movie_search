@@ -12,14 +12,19 @@ const api = new OpenAI({
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const main = async (req,res) => {
-  const systemPrompt = "You are a movie Suggestor";
-  const userPrompt = "Suggest 10 movie trending all over the globe right now";
+  // This is for debugging purposes
+  console.log("Request received");
+  console.log("Request query:", req.query);
+
+  const systemPrompt = req.query.systemPrompt;
+  const userPrompt = req.query.userPrompt;
+
   console.log("systemPrompt:", systemPrompt);
   console.log("userPrompt:", userPrompt);
 
   if (!systemPrompt || !userPrompt) {
     console.error("Both systemPrompt and userPrompt must be defined.");
-    return;
+    return res.status(400).json({ success: false, error: "Both systemPrompt and userPrompt must be defined." });
   }
 
   let retries = 3;

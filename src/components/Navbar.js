@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaSun, FaMoon, FaFilm } from "react-icons/fa"; // Importing icons for light and dark mode
 
-const Navbar = ({ mode, setMode }) => {
+const Navbar = ({ mode }) => {
 
 
     return (
