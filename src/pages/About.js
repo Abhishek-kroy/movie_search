@@ -4,6 +4,7 @@ import { FaInfoCircle, FaUsers, FaClipboardList } from "react-icons/fa"; // Icon
 import ToggleButton from "../components/ToggleButton";
 
 const About = ({ mode, setMode }) => {
+    
 
     return (
         <div className={`min-h-screen ${mode === 'dark' ? "bg-gray-900 text-white" : "bg-white text-gray-900"} transition-all duration-300`}>
