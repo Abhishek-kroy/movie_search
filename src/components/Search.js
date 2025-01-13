@@ -13,7 +13,7 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
       const staticMovieData = response1.data.Search
         ? [...response1.data.Search]
         : [];
-      setsuggestedMovies(staticMovieData);
+      setsuggestedMovies(staticMovieData);  // Show static movies immediately
   
       const systemPrompt = "You are a good movie advisor based on input, and if not found, suggest movies related to that. Just return an array of movie names only";
       const userPrompt = `Tell me few movies with the name ${movieName}`;
@@ -40,8 +40,7 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
           } catch (e) {
             console.error("Failed to parse string as JSON:", e);
             movieTitles = aimlResponse.data.response
-              .split(/,|\n/)
-              .map(name => name.trim().replace(/^\d+\./, "").split("(")[0].trim())
+              .split(/,|\n/).map(name => name.trim().replace(/^\d+\./, "").split("(")[0].trim())
               .filter(name => name);
           }
         } else if (aimlResponse.data && aimlResponse.data.movies) {
@@ -55,8 +54,6 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
           console.log("No movies found in AIML response.");
           return;
         }
-  
-        // Fetch additional details for each movie
         const movieApiCalls = movieTitles.map(async (title) => {
           const response = await axios.get(`http://www.omdbapi.com/?apikey=8eb679da&t=${title}&plot=full`);
           return response.data.Response === "True" ? response.data : null;
@@ -66,7 +63,8 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
         const allMovies = dynamicMovies.filter(movie => movie !== null);
   
         console.log("Final list of movies:", allMovies);
-        setsuggestedMovies([...staticMovieData, ...allMovies]);
+        setsuggestedMovies(prevMovies => [...prevMovies, ...allMovies]);  // Add dynamic movies to the list
+  
       } catch (error) {
         console.error("Error fetching movie suggestions:", error);
       }
@@ -74,7 +72,7 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
       setisloading("Movie not found");
       console.error("Error in outer try block, please try again to search for it:", error);
     }
-  };  
+  };    
 
   const handleInputChange = (event) => {
     setMovieName(event.target.value);

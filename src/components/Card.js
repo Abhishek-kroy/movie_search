@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
+import "./Card.css";
 
-const Card = ({ title, year, imgUrl, plot, ratings, mode }) => {
+const Card = ({ title, year, imgUrl, plot, ratings, mode, isLiked, handleLiked }) => {
   const [showFullPlot, setShowFullPlot] = useState(false);
+
+  useEffect(() => {
+    const checkInitialLike = () => {
+      const favouriteMovies = JSON.parse(localStorage.getItem("favouriteMovies")) || [];
+      const isMovieLiked = favouriteMovies.includes(title);
+      if (isMovieLiked) {
+        handleLiked();
+      }
+    };
+    checkInitialLike();
+  }, [title]);
 
   const togglePlot = () => setShowFullPlot(!showFullPlot);
 
-  // Extract the IMDb rating
   const imdbRating = ratings?.find(rating => rating.Source === "Internet Movie Database")?.Value || "N/A";
 
   const cardModeClass = mode === "dark" ? "dark" : "";
   const containerClasses = `relative group cursor-pointer bg-white dark:bg-gray-800 h-auto rounded-3xl shadow-2xl overflow-hidden transform transition-transform duration-300 ease-in-out flex flex-col md:flex-row ${cardModeClass}`;
   const textModeClass = mode === "dark" ? "dark:bg-gray-800 dark:text-white" : "bg-white text-gray-800";
-  const plotTextClass = `text-gray-800 dark:text-gray-300 ${showFullPlot ? "" : "truncate"}`;
-  
-  // Heading colors based on mode
+
   const headingClass = mode === "dark" ? "text-white" : "text-gray-800";
   const secondaryHeadingClass = mode === "dark" ? "text-gray-300" : "text-gray-700";
 
@@ -50,9 +59,17 @@ const Card = ({ title, year, imgUrl, plot, ratings, mode }) => {
           </button>
         </div>
 
-        <div className=" flex justify-between mt-6">
+        <div className="flex justify-between mt-6">
           <p><strong>IMDb Rating:</strong> {imdbRating}</p>
-          <FaHeart className="text-red-500 cursor-pointer hover:text-red-400 transition-colors text-2xl" />
+
+          {/* Heart Icon with animation and color transition */}
+          <FaHeart
+            onClick={handleLiked}
+            className={`cursor-pointer text-2xl transition-all duration-300 transform ${isLiked
+                ? "text-red-600 scale-110 animate-heart-jump"  // Red heart with jump effect when liked
+                : "text-gray-300 hover:text-red-300"
+              }`}
+          />
         </div>
       </div>
     </div>
