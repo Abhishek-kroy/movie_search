@@ -15,38 +15,47 @@ const Carousel = () => {
                 const response1 = await axios.get(apiUrl1);
                 const response2 = await axios.get(apiUrl2);
                 console.log("Static Movie Lists:", response1.data.Search, response2.data.Search);
-        
+
                 const systemPrompt = "You are a movie Suggestor";
                 const userPrompt = "Suggest 10 movie trending all over the globe right now";
-        
+
                 // Always set static movies first
-                
+
                 const staticMovieData = [
                     ...response1.data.Search.slice(0, 1),
                     ...response2.data.Search.slice(0, 1)
                 ];
-        
+
                 setMovies(staticMovieData);
-        
+
                 const aimlResponse = await axios.get('http://localhost:3000/api/v1/aimlsuggesstion', {
                     params: {
                         systemPrompt: systemPrompt,
                         userPrompt: userPrompt
                     }
                 });
-        
+
                 console.log("AIML API Response:", aimlResponse.data);
-        
+
                 let movieTitles = [];
-                
-                if (aimlResponse.data.success) {
-                    console.log("Movie Suggestions:", aimlResponse.data.response);
-                    movieTitles = aimlResponse.data.response.match(/\"([^\"]+)\"/g).map(title => title.replace(/\"/g, ''));
-                    console.log("Extracted Movie Titles:", movieTitles);
-                } else {
-                    console.error("Failed to fetch suggestions:", aimlResponse.data.error);
+
+                try {
+                    if (aimlResponse.data.success) {
+                        console.log("Movie Suggestions:", aimlResponse.data.response);
+
+                        // Extract titles using regex and clean up quotes
+                        const movieTitles = aimlResponse.data.response.match(/"([^"]+)"/g)
+                            .map(title => title.replace(/"/g, ''));
+
+
+                        console.log("Extracted Movie Titles:", movieTitles);
+                    } else {
+                        console.error("Failed to fetch suggestions:", aimlResponse.data.error);
+                    }
+                } catch (error) {
+                    console.error("Error while processing movie suggestions:", error);
                 }
-        
+
                 // Fetch additional movie data based on AIML response if available
                 const movieApiCalls = movieTitles.map(async (title) => {
                     const response = await axios.get(`http://www.omdbapi.com/?apikey=8eb679da&s=${title}`);
@@ -57,18 +66,18 @@ const Carousel = () => {
                         return null;
                     }
                 });
-        
+
                 const dynamicMovies = await Promise.all(movieApiCalls);
-        
+
                 // Combine static and dynamic movies
                 const allMovies = [...staticMovieData, ...dynamicMovies.filter((movie) => movie !== null)];
                 setMovies(allMovies);
                 console.log("All Movies:", allMovies);
-        
+
             } catch (error) {
                 console.error("Error fetching movie data:", error);
             }
-        };              
+        };
 
         fetchMovies();
     }, []);

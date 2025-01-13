@@ -38,18 +38,19 @@ const Footer = ({ mode }) => {
                     <div>
                         <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
                         <div className="flex space-x-4">
-                            <a href="#" className={`text-blue-400 ${linkHoverColor}`} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <button className={`text-blue-400 ${linkHoverColor}`} aria-label="Facebook" onClick={() => { }}>
                                 <FaFacebookF />
-                            </a>
-                            <a href="#" className={`text-blue-400 ${linkHoverColor}`} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                            </button>
+                            <button className={`text-blue-400 ${linkHoverColor}`} aria-label="Twitter" onClick={() => { }}>
                                 <FaTwitter />
-                            </a>
-                            <a href="#" className={`text-blue-400 ${linkHoverColor}`} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            </button>
+                            <button className={`text-blue-400 ${linkHoverColor}`} aria-label="Instagram" onClick={() => { }}>
                                 <FaInstagram />
-                            </a>
-                            <a href="#" className={`text-blue-400 ${linkHoverColor}`} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            </button>
+                            <button className={`text-blue-400 ${linkHoverColor}`} aria-label="LinkedIn" onClick={() => { }}>
                                 <FaLinkedinIn />
-                            </a>
+                            </button>
+
                         </div>
                     </div>
 
