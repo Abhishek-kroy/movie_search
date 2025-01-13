@@ -5,8 +5,8 @@ const Carousel = () => {
     const [movies, setMovies] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const apiUrl1 = "http://www.omdbapi.com/?apikey=8eb679da&s=superman";
-    const apiUrl2 = "http://www.omdbapi.com/?apikey=8eb679da&s=Avengers";
+    const apiUrl1 = "https://www.omdbapi.com/?apikey=8eb679da&s=superman";
+    const apiUrl2 = "https://www.omdbapi.com/?apikey=8eb679da&s=Avengers";
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -58,7 +58,7 @@ const Carousel = () => {
 
                 // Fetch additional movie data based on AIML response if available
                 const movieApiCalls = movieTitles.map(async (title) => {
-                    const response = await axios.get(`http://www.omdbapi.com/?apikey=8eb679da&s=${title}`);
+                    const response = await axios.get(`https://www.omdbapi.com/?apikey=8eb679da&s=${title}`);
                     if (response.data.Response === "True") {
                         return response.data.Search.slice(0, 1)[0]; // Add only the first movie result
                     } else {

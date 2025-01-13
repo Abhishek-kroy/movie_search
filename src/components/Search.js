@@ -6,7 +6,7 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
 
   const DisplayMovies = async () => {
     try {
-      const apiUrl1 = `http://www.omdbapi.com/?apikey=8eb679da&s=${movieName}`;
+      const apiUrl1 = `https://www.omdbapi.com/?apikey=8eb679da&s=${movieName}`;
       const response1 = await axios.get(apiUrl1);
       console.log("Static Movie Lists:", response1.data.Search);
   
@@ -19,7 +19,7 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
       const userPrompt = `Tell me few movies with the name ${movieName}`;
   
       try {
-        const aimlResponse = await axios.get('http://localhost:3000/api/v1/aimlsuggesstion', {
+        const aimlResponse = await axios.get('https://localhost:3000/api/v1/aimlsuggesstion', {
           params: {
             systemPrompt: systemPrompt,
             userPrompt: userPrompt
@@ -55,7 +55,7 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
           return;
         }
         const movieApiCalls = movieTitles.map(async (title) => {
-          const response = await axios.get(`http://www.omdbapi.com/?apikey=8eb679da&t=${title}&plot=full`);
+          const response = await axios.get(`https://www.omdbapi.com/?apikey=8eb679da&t=${title}&plot=full`);
           return response.data.Response === "True" ? response.data : null;
         });
   

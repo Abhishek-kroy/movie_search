@@ -15,7 +15,7 @@ const Favorite = (props) => {
             const moviesData = [];
 
             for (let title of favorites) {
-                const apiUrl = `http://www.omdbapi.com/?apikey=8eb679da&t=${title}&plot=full`;  // Fix the API URL
+                const apiUrl = `https://www.omdbapi.com/?apikey=8eb679da&t=${title}&plot=full`;  // Fix the API URL
                 try {
                     const response = await axios.get(apiUrl);
                     if (response.data.Response === "True") {
