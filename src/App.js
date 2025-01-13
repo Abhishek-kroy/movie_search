@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home.js';
+import About from './pages/About.js';
+import Favorite from './pages/Favorite.js';
 
 function App() {
+  const [mode, setMode] = useState('light');  // Mode state (light or dark)
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+    <ToastContainer />
+      <Routes>
+        <Route path="/" element={<Home mode={mode} setMode={setMode} />} />
+        <Route path="/about" element={<About mode={mode} setMode={setMode} />} />
+        <Route path="/favorites" element={<Favorite mode={mode} setMode={setMode} />} />
+      </Routes>
     </div>
   );
 }

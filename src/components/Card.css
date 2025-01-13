@@ -1,0 +1,17 @@
+@keyframes heartJump {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    50% {
+        transform: scale(1.2) rotate(20deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.animate-heart-jump {
+    animation: heartJump 0.6s ease-in-out;
+}
