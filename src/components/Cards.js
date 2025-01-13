@@ -8,8 +8,14 @@ const Cards = ({ mode, suggestedMovies, isloading }) => {
 
   // Update the isLiked array only when suggestedMovies changes
   useEffect(() => {
-    setIsLiked(new Array(suggestedMovies.length).fill(false));  // Initialize to false (not liked)
-  }, [suggestedMovies]); // Dependency array ensures it runs only when suggestedMovies changes
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    for (let i = 0; i < suggestedMovies.length; i++) {
+      if (favorites.includes(suggestedMovies[i].Title)) {
+        setIsLiked((prev) => [...prev, true]);
+      } else {
+        setIsLiked((prev) => [...prev, false]);
+    }
+  }}, [suggestedMovies]);
 
   // Function to toggle the "liked" status of a movie
   const handleLiked = (index) => {
