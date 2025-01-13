@@ -28,7 +28,6 @@ const Carousel = () => {
         
                 setMovies(staticMovieData);
         
-                // Proceed to fetch AIML response if available
                 const aimlResponse = await axios.get('http://localhost:3000/api/v1/aimlsuggesstion', {
                     params: {
                         systemPrompt: systemPrompt,
@@ -42,8 +41,6 @@ const Carousel = () => {
                 
                 if (aimlResponse.data.success) {
                     console.log("Movie Suggestions:", aimlResponse.data.response);
-        
-                    // Extract movie names from the response
                     movieTitles = aimlResponse.data.response.match(/\"([^\"]+)\"/g).map(title => title.replace(/\"/g, ''));
                     console.log("Extracted Movie Titles:", movieTitles);
                 } else {
@@ -78,14 +75,14 @@ const Carousel = () => {
 
     useEffect(() => {
         console.log(movies);
-    }, [movies.length]);
+    }, [movies]);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setActiveIndex((prevIndex) => (prevIndex + 1) % movies.length); // Circular navigation
+            setActiveIndex((prevIndex) => (prevIndex + 1) % movies.length);
         }, 3000);
 
-        return () => clearInterval(interval); // Cleanup interval on component unmount
+        return () => clearInterval(interval);
     }, [movies.length]);
 
     const goToPreviousSlide = () => {

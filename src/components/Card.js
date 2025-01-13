@@ -1,20 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import "./Card.css";
+import { toast } from "react-toastify";
 
-const Card = ({ title, year, imgUrl, plot, ratings, mode, isLiked, handleLiked }) => {
+const getFavorites = () => {
+  try {
+    return JSON.parse(localStorage.getItem("favorites")) || [];
+  } catch {
+    return [];
+  }
+};
+
+
+const Card = ({ title, year, imgUrl, plot, ratings, mode }) => {
   const [showFullPlot, setShowFullPlot] = useState(false);
-
-  useEffect(() => {
-    const checkInitialLike = () => {
-      const favouriteMovies = JSON.parse(localStorage.getItem("favouriteMovies")) || [];
-      const isMovieLiked = favouriteMovies.includes(title);
-      if (isMovieLiked) {
-        handleLiked();
+  const [favorites, setFavorites] = useState(getFavorites());
+  const [isLiked, setIsLiked] = useState(favorites.includes(title));
+  
+  const handleLiked = () => {
+    let updatedFavorites;
+    if (isLiked) {
+      updatedFavorites = getFavorites().filter(favMovie => favMovie !== title);
+    } else {
+      updatedFavorites = [...getFavorites(), title];
+    }
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    
+    toast[isLiked ? "info" : "success"](
+      isLiked ? "Movie Unliked!" : "Movie Liked!", {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+        draggable: true,
+        theme: mode,
       }
-    };
-    checkInitialLike();
-  }, [title]);
+    );
+    setIsLiked(!isLiked);
+  };
 
   const togglePlot = () => setShowFullPlot(!showFullPlot);
 
@@ -42,7 +65,7 @@ const Card = ({ title, year, imgUrl, plot, ratings, mode, isLiked, handleLiked }
           <h2 className={`text-3xl font-bold ${headingClass} truncate`}>{title || "Untitled"}</h2>
         </div>
 
-        <div className="mb-4 text-sm ${headingClass}">
+        <div className={`mb-4 text-sm ${headingClass}`}>
           <p><strong>Year:</strong> {year || "N/A"}</p>
         </div>
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaFilm } from "react-icons/fa"; // Importing the movie icon
+import { FaFilm } from "react-icons/fa"; 
 
 const Navbar = ({ mode }) => {
     const navigate = useNavigate();
