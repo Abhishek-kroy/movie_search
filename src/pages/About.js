@@ -58,18 +58,13 @@ const About = ({ mode, setMode }) => {
                 </div>
 
                 {/* Meet the Team Section */}
-                <div className={`flex flex-col justify-center items-center ${mode === 'light' ? 'bg-white' : 'dark:bg-gray-800'} py-16 px-4 mb-16 rounded-lg shadow-lg`}>
+                <div className={`w-[80vw] lg:w-[30vw] flex flex-col justify-center items-center ${mode === 'light' ? 'bg-white' : 'dark:bg-gray-800'} py-16 px-4 mb-16 rounded-lg shadow-lg`}>
                     <h2 className="text-2xl font-semibold text-center mb-8">Meet the Team</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                    <div className="w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-8">
                         <div className="flex flex-col items-center">
                             <div className="w-32 h-32 bg-blue-200 rounded-full mb-4"></div> {/* Placeholder for team member photo */}
                             <h3 className="font-semibold">Abhishek Kumar Roy</h3>
                             <p className="text-gray-500">Project Owner</p>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <div className="w-32 h-32 bg-blue-200 rounded-full mb-4"></div>
-                            <h3 className="font-semibold">Jane Smith</h3>
-                            <p className="text-gray-500">Lead Developer</p>
                         </div>
                     </div>
                 </div>

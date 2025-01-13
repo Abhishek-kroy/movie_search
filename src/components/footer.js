@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navigate} from 'react'
+import { Link } from 'react-router-dom';  // Import Link from react-router-dom
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 const Footer = ({ mode }) => {
@@ -15,10 +15,9 @@ const Footer = ({ mode }) => {
                     <div>
                         <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
                         <ul className="space-y-2">
-                            <li><a href="index.html" className={`text-blue-400 ${linkHoverColor}`}>Home</a></li>
-                            <li><a href="Blood_Availability_Search.html" className={`text-blue-400 ${linkHoverColor}`}>Favorites</a></li>
-                            <li><a href="Blood_Bank_Directory.html" className={`text-blue-400 ${linkHoverColor}`}>About Us</a></li>
-                            <li><a href="contactUs.html" className={`text-blue-400 ${linkHoverColor}`}>Contact Us</a></li>
+                            <li><Link to="/" className={`text-blue-400 ${linkHoverColor}`}>Home</Link></li>
+                            <li><Link to="/favorites" className={`text-blue-400 ${linkHoverColor}`}>Favorites</Link></li>
+                            <li><Link to="/about" className={`text-blue-400 ${linkHoverColor}`}>About Us</Link></li>
                         </ul>
                     </div>
 
@@ -58,10 +57,10 @@ const Footer = ({ mode }) => {
                     <div>
                         <h3 className="text-lg font-semibold mb-4">Legal</h3>
                         <ul className="space-y-2">
-                            <li><a href="#" className={`text-blue-400 ${linkHoverColor}`}>Privacy Policy</a></li>
-                            <li><a href="#" className={`text-blue-400 ${linkHoverColor}`}>Terms & Conditions</a></li>
-                            <li><a href="#" className={`text-blue-400 ${linkHoverColor}`}>Accessibility</a></li>
-                            <li><a href="#" className={`text-blue-400 ${linkHoverColor}`}>Cookie Policy</a></li>
+                            <li><Link to="/privacy-policy" className={`text-blue-400 ${linkHoverColor}`}>Privacy Policy</Link></li>
+                            <li><Link to="/terms" className={`text-blue-400 ${linkHoverColor}`}>Terms & Conditions</Link></li>
+                            <li><Link to="/accessibility" className={`text-blue-400 ${linkHoverColor}`}>Accessibility</Link></li>
+                            <li><Link to="/cookie-policy" className={`text-blue-400 ${linkHoverColor}`}>Cookie Policy</Link></li>
                         </ul>
                     </div>
                 </div>
