@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import Card from '../components/Card'; // Assuming you have a Card component
-import Footer from '../components/Footer';
+import Footer from '../components/footer';
 import ToggleButton from '../components/ToggleButton';
 
 const Favorite = (props) => {

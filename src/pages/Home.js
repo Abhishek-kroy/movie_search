@@ -4,7 +4,7 @@ import Carousel from "../components/Carousel";
 import ToggleButton from "../components/ToggleButton";
 import Search from "../components/Search";
 import Cards from "../components/Cards";
-import Footer from "../components/Footer";
+import Footer from "../components/footer";
 
 const Home = (props) => {
     const { mode, setMode } = props;
