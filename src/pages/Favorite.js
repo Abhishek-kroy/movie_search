@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Navbar from '../components/Navbar';
-import Card from '../components/Card'; // Assuming you have a Card component
+import Card from '../components/Card';
 import Footer from '../components/footer';
 import ToggleButton from '../components/ToggleButton';
 
@@ -12,21 +11,7 @@ const Favorite = (props) => {
     useEffect(() => {
         const fetchFavoriteMovies = async () => {
             const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-            const moviesData = [];
-
-            for (let title of favorites) {
-                const apiUrl = `https://www.omdbapi.com/?apikey=8eb679da&t=${title}&plot=full`;  // Fix the API URL
-                try {
-                    const response = await axios.get(apiUrl);
-                    if (response.data.Response === "True") {
-                        moviesData.push(response.data);
-                    }
-                } catch (err) {
-                    console.log(err);
-                }
-            }
-
-            setFavoriteMovies(moviesData);
+            setFavoriteMovies(favorites);
         };
 
         fetchFavoriteMovies();
@@ -46,14 +31,11 @@ const Favorite = (props) => {
                 
                 {favoriteMovies.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                        {favoriteMovies.map((movie, index) => (
+                        {favoriteMovies.map((title, index) => (
                             <Card
                                 key={index}
-                                title={movie.Title}
-                                year={movie.Year}
-                                imgUrl={movie.Poster}
-                                plot={movie.Plot}
-                                ratings={movie.Ratings}
+                                title={title}
+                               
                                 mode={mode}
                             />
                         ))}

@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 6000;
 
 // Configure CORS to allow specific origins
 const corsOptions = {
-    origin: '*', // Replace with the client origin
+    origin: ['*','https://moviesearchforproject.netlify.app/'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 };
