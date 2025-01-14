@@ -6,18 +6,19 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
 
   const DisplayMovies = async () => {
     try {
-      const apiUrl1 = `https://www.omdbapi.com/?apikey=8eb679da&s=${movieName}`;
+      const apiUrl1 = `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDBAPIKEY}&s=${movieName}`;
       const response1 = await axios.get(apiUrl1);
-      console.log("Static Movie Lists:", response1.data.Search);
-  
+      console.log("Static Movie Lists:", response1.data.Search.map(movie => movie.Title));
+
       const staticMovieData = response1.data.Search
-        ? [...response1.data.Search]
+        ? response1.data.Search.map(movie => movie.Title)
         : [];
+
       setsuggestedMovies(staticMovieData);  // Show static movies immediately
-  
+
       const systemPrompt = "You are a good movie advisor based on input, and if not found, suggest movies related to that. Just return an array of movie names only";
       const userPrompt = `Tell me few movies with the name ${movieName}`;
-  
+
       try {
         const aimlResponse = await axios.get('https://localhost:3000/api/v1/aimlsuggesstion', {
           params: {
@@ -25,11 +26,11 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
             userPrompt: userPrompt
           }
         });
-  
+
         console.log("AIML API Response:", aimlResponse.data.response);
-  
+
         let movieTitles = [];
-  
+
         // Processing the response to extract movie names
         if (Array.isArray(aimlResponse.data.response)) {
           movieTitles = aimlResponse.data.response;
@@ -49,22 +50,22 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
           console.error("Unexpected response format", aimlResponse.data);
           return;
         }
-  
+
         if (movieTitles.length === 0) {
           console.log("No movies found in AIML response.");
           return;
         }
-        const movieApiCalls = movieTitles.map(async (title) => {
-          const response = await axios.get(`https://www.omdbapi.com/?apikey=8eb679da&t=${title}&plot=full`);
-          return response.data.Response === "True" ? response.data : null;
-        });
-  
-        const dynamicMovies = await Promise.all(movieApiCalls);
-        const allMovies = dynamicMovies.filter(movie => movie !== null);
-  
-        console.log("Final list of movies:", allMovies);
-        setsuggestedMovies(prevMovies => [...prevMovies, ...allMovies]);  // Add dynamic movies to the list
-  
+        // const movieApiCalls = movieTitles.map(async (title) => {
+        //   const response = await axios.get(`https://www.omdbapi.com/?apikey=8eb679da&t=${title}&plot=full`);
+        //   return response.data.Response === "True" ? response.data : null;
+        // });
+
+        // const dynamicMovies = await Promise.all(movieApiCalls);
+        // const allMovies = dynamicMovies.filter(movie => movie !== null);
+
+        console.log("Final list of movies:", [...staticMovieData, ...movieTitles]);
+        setsuggestedMovies(prevMovies => [...prevMovies, ...movieTitles]);  // Add dynamic movies to the list
+
       } catch (error) {
         console.error("Error fetching movie suggestions:", error);
       }
@@ -72,7 +73,7 @@ const Search = ({ mode, setsuggestedMovies, setisloading }) => {
       setisloading("Movie not found");
       console.error("Error in outer try block, please try again to search for it:", error);
     }
-  };    
+  };
 
   const handleInputChange = (event) => {
     setMovieName(event.target.value);

@@ -7,7 +7,7 @@ import About from './pages/About.js';
 import Favorite from './pages/Favorite.js';
 
 function App() {
-  const [mode, setMode] = useState('light');  // Mode state (light or dark)
+  const [mode, setMode] = useState('light');
   
   return (
     <div>

@@ -3,20 +3,16 @@ import Card from "./Card";
 import { FaSpinner } from "react-icons/fa";
 
 const Cards = ({ mode, suggestedMovies, isloading }) => {
-
+  console.log("Suggested Movies in Cards:", suggestedMovies);
   return (
     <div className="flex flex-col mt-4 px-4">
       {suggestedMovies.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {suggestedMovies.map((movie, index) => (
+          {suggestedMovies.map((title, index) => (
             <Card
               key={index}
               mode={mode}
-              title={movie.Title}
-              year={movie.Year}
-              imgUrl={movie.Poster}
-              plot={movie.Plot}
-              ratings={movie.Ratings}
+              title={title}
             />
           ))}
         </div>
