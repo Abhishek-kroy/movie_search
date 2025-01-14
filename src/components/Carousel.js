@@ -5,12 +5,12 @@ const Carousel = () => {
     const [movies, setMovies] = useState([]);
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const apiUrl1 = `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDBAPIKEY}&s=superman`;
-    const apiUrl2 = `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDBAPIKEY}&s=Avengers`;
-
+    
     useEffect(() => {
         const fetchMovies = async () => {
             try {
+                const apiUrl1 = `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDBAPIKEY}&s=superman`;
+                const apiUrl2 = `https://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDBAPIKEY}&s=Avengers`;
                 // Fetch static movie lists first
                 const response1 = await axios.get(apiUrl1);
                 const response2 = await axios.get(apiUrl2);
